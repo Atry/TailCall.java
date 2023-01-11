@@ -57,15 +57,11 @@ final class TailCall {
 
 		@Override
 		protected Object evaluate() {
-			try {
-				return super.evaluate();
-			} finally {
-				final ArrayDeque<ParasiticTailCallHandler> existingDeque = TAIL_CALL_DEQUE.get();
-				if (existingDeque != null) {
-					ParasiticTailCallHandler last = existingDeque.removeLast();
-					assert this == last;
-				}
+			final ArrayDeque<ParasiticTailCallHandler> existingDeque = TAIL_CALL_DEQUE.get();
+			if (existingDeque != null) {
+				existingDeque.removeLastOccurrence(this);
 			}
+			return super.evaluate();
 		}
 
 	}
